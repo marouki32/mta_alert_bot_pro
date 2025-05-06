@@ -1,0 +1,7 @@
+PyQt5
+pandas
+numpy
+yfinance
+alpha_vantage
+python-telegram-bot
+scikit-learn
