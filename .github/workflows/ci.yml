@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    name: Run tests
+    name: Run tests & coverage
     runs-on: ubuntu-latest
 
     steps:
@@ -25,16 +25,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest
 
-            - name: Run pytest with coverage
-     run: |
-       pytest --cov=api \
-              --cov=analysis \
-              --cov=notifications \
-              --cov=main \
-              --cov-report=xml \
-              -q
+      - name: Run pytest with coverage
+        run: |
+          pytest --cov=api \
+                 --cov=analysis \
+                 --cov=notifications \
+                 --cov=main \
+                 --cov-report=xml \
+                 -q
 
       - name: Upload coverage to Codecov
         if: success()
