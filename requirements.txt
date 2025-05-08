@@ -5,3 +5,7 @@ yfinance
 alpha_vantage
 python-telegram-bot
 scikit-learn
+matplotlib
+openpyxl       
+reportlab      
+pytest

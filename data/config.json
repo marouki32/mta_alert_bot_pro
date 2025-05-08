@@ -1,0 +1,45 @@
+{
+  "symbols": [
+    "EURUSD=X",
+    "GBPUSD=X",
+    "USDJPY=X",
+    "BTC-USD"
+  ],
+  "timeframe": "1h",
+  "indicators": {
+    "rsi": 14,
+    "ema": [
+      20,
+      50
+    ],
+    "bollinger": {
+      "window": 20,
+      "std": 2.0
+    }
+  },
+  "alerts": {
+    "confidence_threshold": 0.75,
+    "score_threshold": 2.0
+  },
+  "backtest": {
+    "timeframes": [
+      "15m",
+      "1h",
+      "4h"
+    ],
+    "periods": [
+      {
+        "label": "Dernier mois",
+        "days": 30
+      },
+      {
+        "label": "Derniers 3 mois",
+        "days": 90
+      },
+      {
+        "label": "Derni\u00e8re ann\u00e9e",
+        "days": 365
+      }
+    ]
+  }
+}
