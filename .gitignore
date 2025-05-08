@@ -3,5 +3,6 @@ __pycache__/
 *.pyc
 data/alerts.db
 data/alerts.csv
-# Fichier de variables d'environnement (clés secrètes)
 .env
+.coverage
+coverage.xml
