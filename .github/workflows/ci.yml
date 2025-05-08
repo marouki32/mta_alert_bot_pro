@@ -27,11 +27,16 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
-      - name: Run pytest
-        run: |
-          pytest -q
+            - name: Run pytest with coverage
+     run: |
+       pytest --cov=api \
+              --cov=analysis \
+              --cov=notifications \
+              --cov=main \
+              --cov-report=xml \
+              -q
 
-      - name: Upload coverage (optional)
+      - name: Upload coverage to Codecov
         if: success()
         uses: codecov/codecov-action@v3
         with:

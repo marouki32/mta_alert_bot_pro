@@ -9,4 +9,5 @@ matplotlib
 openpyxl       
 reportlab      
 pytest
+pytest-cov
 python-dotenv
