@@ -4,29 +4,29 @@ import os
 import sqlite3
 
 def init_database():
-    # 1) Construire le chemin absolu vers data/alerts.db
+    # calculer le chemin absolu vers data/alerts.db
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    db_dir = os.path.join(base_dir, "data")
-    db_path = os.path.join(db_dir, "alerts.db")
+    db_dir   = os.path.join(base_dir, "data")
+    db_path  = os.path.join(db_dir, "alerts.db")
 
-    # 2) Créer le dossier data/ s’il n’existe pas
-    os.makedirs(db_dir, exist_ok=True)
-    print(f"✅ Répertoire créé ou existant : {db_dir}")
+    # créer data/ s’il n’existe pas
+    os.makedirs(db_dir, exist_ok=True)  # :contentReference[oaicite:1]{index=1}
+    print(f"✅ Répertoire prêt : {db_dir}")
 
-    # 3) Se connecter (va créer alerts.db s’il n’existe pas)
-    conn = sqlite3.connect(db_path)
-    print(f"✅ Base de données ouverte : {db_path}")
+    # ouvrir (ou créer) la base
+    conn = sqlite3.connect(db_path)     # :contentReference[oaicite:2]{index=2}
+    print(f"✅ Base ouverte : {db_path}")
 
-    # 4) Créer la table alerts si besoin
+    # créer la table alerts si manquante
     conn.execute("""
         CREATE TABLE IF NOT EXISTS alerts (
             timestamp TEXT,
             symbol    TEXT,
             score     REAL
         )
-    """)
+    """)  # :contentReference[oaicite:3]{index=3}
     conn.commit()
-    print("✅ Table ‘alerts’ créée ou déjà existante")
+    print("✅ Table ‘alerts’ prête")
 
     conn.close()
 
