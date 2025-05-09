@@ -18,7 +18,7 @@
     }
   },
   "alerts": {
-    "confidence_threshold": 0.75,
+    "confidence_threshold": 0.02,
     "score_threshold": 2.0
   },
   "backtest": {
