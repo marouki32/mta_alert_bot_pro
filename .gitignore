@@ -6,3 +6,5 @@ data/alerts.csv
 .env
 .coverage
 coverage.xml
+# MkDocs site output
+/site/
