@@ -15,3 +15,5 @@ mplcursors
 mkdocs
 mkdocs-material
 jinja2
+openpyxl
+reportlab
