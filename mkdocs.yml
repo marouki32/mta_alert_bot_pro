@@ -1,0 +1,27 @@
+# mkdocs.yml — configuration de ton site MkDocs
+
+site_name: MTA Alert Bot Pro
+site_description: Dashboard statique des alertes trading
+# URL de base si tu publies sur GitHub Pages, sinon commente ou supprime
+site_url: https://marouki32.github.io/mta_alert_bot_pro
+
+# Thème Material (gratuits, responsive)
+theme:
+  name: material
+
+# Navigation dans le menu
+nav:
+  - Home: index.md
+  - Alertes:
+      - Dernières alertes: alerts.md
+      - Statistiques: stats.md
+
+# Dossier où se trouvent tes pages Markdown
+docs_dir: docs
+
+# Dossier généré où seront les fichiers HTML
+site_dir: site
+
+# Optionnel : plugins MkDocs
+plugins:
+  - search
