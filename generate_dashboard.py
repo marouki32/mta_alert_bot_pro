@@ -1,43 +1,54 @@
 # generate_dashboard.py
 
 import sqlite3
-from datetime import datetime
 import jinja2
 import os
 
-# 1) Charger les alertes depuis SQLite
-conn = sqlite3.connect("data/alerts.db")
+DB_PATH = "data/alerts.db"
+
+# Assure-toi que le dossier existe
+os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
+# 1) Ouvre (ou crée) la base, et crée la table s’il n’y en a pas
+conn = sqlite3.connect(DB_PATH)
+conn.execute("""
+    CREATE TABLE IF NOT EXISTS alerts (
+        timestamp TEXT,
+        symbol    TEXT,
+        score     REAL
+    )
+""")
+conn.commit()
+
+# 2) Charge les dernières alertes (sera vide si aucune)
 cur = conn.execute(
     "SELECT timestamp, symbol, score FROM alerts ORDER BY timestamp DESC LIMIT 50"
 )
-alerts = [
-    {"timestamp": row[0], "symbol": row[1], "score": row[2]}
-    for row in cur
-]
+alerts = [{"timestamp": r[0], "symbol": r[1], "score": r[2]} for r in cur]
 conn.close()
 
-# 2) Calculer des stats simples
+# 3) Statistiques
 scores = [a["score"] for a in alerts]
-total = len(scores)
-win = len([s for s in scores if s > 0])
-win_rate = round(100 * win / total, 1) if total else 0
-avg = sum(scores) / total if total else 0
+total    = len(scores)
+win       = len([s for s in scores if s>0])
+win_rate  = round(100*win/total,1) if total else 0
+avg_score = sum(scores)/total if total else 0
 
 stats = {
     "total_alerts": total,
-    "win_rate": win_rate,
-    "avg_score": avg
+    "win_rate":     win_rate,
+    "avg_score":    avg_score
 }
 
-# 3) Rendu Jinja sur les .md
+# 4) Rendu Jinja sur les MD
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader("docs"),
     autoescape=False
 )
-for page in ["alerts.md", "stats.md"]:
-    template = env.get_template(page)
-    content = template.render(alerts=alerts, stats=stats)
-    with open(os.path.join("docs", page), "w") as f:
+for page in ["alerts.md","stats.md"]:
+    tpl     = env.get_template(page)
+    content = tpl.render(alerts=alerts, stats=stats)
+    with open(os.path.join("docs", page),"w") as f:
         f.write(content)
 
-print("Dashboard sources updated.")
+print("✅ Dashboard sources updated.")
