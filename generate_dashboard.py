@@ -1,10 +1,14 @@
 # generate_dashboard.py
 
 import sqlite3
+import sqlite3, subprocess
 import jinja2
 import os
 
 DB_PATH = "data/alerts.db"
+
+# Initialise la base et la table
+subprocess.run(["python", "init_db.py"], check=True)
 
 # Assure-toi que le dossier existe
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
