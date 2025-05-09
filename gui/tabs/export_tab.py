@@ -7,6 +7,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
+from notifications.exporter import export_to_excel, export_to_pdf
 
 class ExportTab(QWidget):
     def __init__(self, config):
