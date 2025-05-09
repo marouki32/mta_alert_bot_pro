@@ -11,3 +11,7 @@ reportlab
 pytest
 pytest-cov
 python-dotenv
+mplcursors
+mkdocs
+mkdocs-material
+jinja2
