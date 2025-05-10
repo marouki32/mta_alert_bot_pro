@@ -2,6 +2,11 @@ import sys
 import os
 import json
 from PyQt5.QtWidgets import QApplication
+# ── NOUVEAU IMPORT ───────────────────────────────────────────────
+from apscheduler.schedulers.background import BackgroundScheduler
+from notifications.daily_digest import send_daily_digest
+# ─────────────────────────────────────────────────────────────────
+
 from gui.window import MainWindow
 
 # 1) Configuration par défaut si le fichier n'existe pas
@@ -72,6 +77,13 @@ def load_and_validate_config():
 def main():
     # Charge et valide la config
     config = load_and_validate_config()
+
+    # ── NOUVEAU : démarrer le scheduler avant de lancer l'UI ───────
+    scheduler = BackgroundScheduler()
+    # envoie daily digest chaque jour à 00:00 UTC
+    scheduler.add_job(send_daily_digest, trigger="cron", hour=0, minute=0)
+    scheduler.start()
+    # ────────────────────────────────────────────────────────────────
 
     # Démarrage de l'application PyQt5
     app = QApplication(sys.argv)
