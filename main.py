@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()   # ← charge .env AVANT tout import qui s’appuie sur os.getenv
+
 #!/usr/bin/env python3
 import sys
 import os
@@ -7,6 +10,17 @@ from PyQt5.QtWidgets import QApplication
 from apscheduler.schedulers.background import BackgroundScheduler
 from notifications.daily_digest import send_daily_digest
 from gui.window import MainWindow
+
++ # ── Scheduler quotidien (daily digest) optionnel ───────────
++ try:
++     from apscheduler.schedulers.background import BackgroundScheduler
++     from notifications.daily_digest import send_daily_digest
++     SCHEDULER_ENABLED = True
++ except ImportError:
++     # en test ou si apscheduler/daily_digest manquant, on désactive
++     print("Warning: APScheduler or daily_digest not available → scheduler disabled.")
++     SCHEDULER_ENABLED = False
++ # ───────────────────────────────────────────────────────────
 
 # 1) Configuration par défaut si le fichier n'existe pas
 DEFAULT_CONFIG = {
@@ -78,7 +92,12 @@ def main():
     scheduler = BackgroundScheduler()
     scheduler.add_job(send_daily_digest, trigger="cron", hour=0, minute=0)
     scheduler.start()
-    # ──────────────────────────────────────────────────────────────────────────
+    ─
+    # ── Scheduler daily digest (uniquement si import réussi) ─────
+    if SCHEDULER_ENABLED:
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(send_daily_digest, trigger="cron", hour=0, minute=0)
+        scheduler.start()
 
     # Démarrage de l'application PyQt5
     app = QApplication(sys.argv)
