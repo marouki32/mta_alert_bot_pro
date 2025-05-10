@@ -9,6 +9,7 @@ from gui.tabs.backtest_tab        import BacktestTab
 from gui.tabs.backtest_multi_tab  import BacktestMultiTab
 from gui.tabs.chart_tab           import ChartTab
 from gui.tabs.export_tab          import ExportTab
+from gui.tabs.optimize_tab import OptimizeTab
 
 class MainWindow(QMainWindow):
     def __init__(self, config):
@@ -37,6 +38,7 @@ class MainWindow(QMainWindow):
         tabs.addTab(BacktestTab(config),                "Backtest")
         tabs.addTab(BacktestMultiTab(config),            "Backtest Multi‑Périodes")
         tabs.addTab(ChartTab(config),                   "Graphiques")
+        tabs.addTab(OptimizeTab(config),                "Optimisation")
         tabs.addTab(ExportTab(config),                  "Export")
         tabs.addTab(PerformanceTab(config),             "Performance")
         self.setCentralWidget(tabs)
