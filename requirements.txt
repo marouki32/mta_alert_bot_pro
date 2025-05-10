@@ -23,3 +23,4 @@ APScheduler
 matplotlib
 mplcursors
 python-dotenv
+python-dotenv
