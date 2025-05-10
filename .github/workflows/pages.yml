@@ -1,5 +1,14 @@
 name: Build & Deploy MkDocs site
 
+
+# ── DONNER LES DROITS D’ÉCRITURE ─────────────────────────────
+permissions:
+  contents: write    # autorise le push de commits
+  pages:    write    # autorise le déploiement GitHub Pages
+  id-token: write    # nécessaire pour certains tokens OIDC
+# ───────────────────────────────────────────────────────────────
+
+
 on:
   push:
     branches: [ master ]
@@ -7,14 +16,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      contents: read
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
