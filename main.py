@@ -1,12 +1,11 @@
+#!/usr/bin/env python3
 import sys
 import os
 import json
 from PyQt5.QtWidgets import QApplication
-# ── NOUVEAU IMPORT ───────────────────────────────────────────────
+# scheduler pour le digest
 from apscheduler.schedulers.background import BackgroundScheduler
 from notifications.daily_digest import send_daily_digest
-# ─────────────────────────────────────────────────────────────────
-
 from gui.window import MainWindow
 
 # 1) Configuration par défaut si le fichier n'existe pas
@@ -35,10 +34,9 @@ def ensure_config_file():
 
 def validate_config(cfg):
     """Vérifie que cfg a bien les clés et types attendus."""
-    # indicators
     inds = cfg.get("indicators")
     if not isinstance(inds, dict):
-        print("❌ ERREUR CONFIG: 'indicators' doit être un objet (dict), pas une liste.")
+        print("❌ ERREUR CONFIG: 'indicators' doit être un dict, pas une liste.")
         return False
     if "rsi" not in inds or not isinstance(inds["rsi"], int):
         print("❌ ERREUR CONFIG: 'indicators.rsi' manquant ou non entier.")
@@ -48,16 +46,14 @@ def validate_config(cfg):
         return False
     bb = inds.get("bollinger")
     if not isinstance(bb, dict) or "window" not in bb or "std" not in bb:
-        print("❌ ERREUR CONFIG: 'indicators.bollinger' doit être un objet avec 'window' et 'std'.")
+        print("❌ ERREUR CONFIG: 'indicators.bollinger' doit être un dict avec 'window' et 'std'.")
         return False
 
-    # alerts
     al = cfg.get("alerts")
     if not isinstance(al, dict) or "confidence_threshold" not in al:
         print("❌ ERREUR CONFIG: 'alerts.confidence_threshold' manquant.")
         return False
 
-    # symbols
     syms = cfg.get("symbols")
     if not isinstance(syms, list) or len(syms) == 0:
         print("❌ ERREUR CONFIG: 'symbols' doit être une liste non vide.")
@@ -72,21 +68,28 @@ def load_and_validate_config():
         cfg = json.load(f)
     if not validate_config(cfg):
         sys.exit(1)
-    return cfg
+    return cfg   # ← bien indenté dans la fonction
 
 def main():
     # Charge et valide la config
     config = load_and_validate_config()
 
-    # ── NOUVEAU : démarrer le scheduler avant de lancer l'UI ───────
+    # ── Scheduler pour digest quotidien Telegram ─────────────────────────────
     scheduler = BackgroundScheduler()
-    # envoie daily digest chaque jour à 00:00 UTC
     scheduler.add_job(send_daily_digest, trigger="cron", hour=0, minute=0)
     scheduler.start()
-    # ────────────────────────────────────────────────────────────────
+    # ──────────────────────────────────────────────────────────────────────────
 
     # Démarrage de l'application PyQt5
     app = QApplication(sys.argv)
+
+    # ── Charger le style sombre (dark.qss) ────────────────────────────────────
+    qss = os.path.join(os.path.dirname(__file__), "dark.qss")
+    if os.path.isfile(qss):
+        with open(qss, "r") as f:
+            app.setStyleSheet(f.read())
+    # ──────────────────────────────────────────────────────────────────────────
+
     window = MainWindow(config)
     window.show()
     sys.exit(app.exec_())
