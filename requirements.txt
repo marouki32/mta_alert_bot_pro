@@ -20,3 +20,5 @@ reportlab
 APScheduler
 APScheduler
 APScheduler
+matplotlib
+mplcursors
