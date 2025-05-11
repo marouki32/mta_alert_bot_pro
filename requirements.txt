@@ -28,3 +28,4 @@ requests
 python-dotenv
 jsonschema
 jsonschema
+jsonschema
