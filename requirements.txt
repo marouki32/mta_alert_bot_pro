@@ -25,3 +25,4 @@ mplcursors
 python-dotenv
 python-dotenv
 requests
+python-dotenv
