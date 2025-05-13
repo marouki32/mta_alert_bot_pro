@@ -10,6 +10,7 @@ from gui.tabs.backtest_multi_tab  import BacktestMultiTab
 from gui.tabs.chart_tab           import ChartTab
 from gui.tabs.export_tab          import ExportTab
 from gui.tabs.optimize_tab import OptimizeTab
+from gui.tabs.paper_trading_tab import PaperTradingTab
 
 class MainWindow(QMainWindow):
     def __init__(self, config):
@@ -35,8 +36,9 @@ class MainWindow(QMainWindow):
         tabs.addTab(SurveillanceTab(config),            "Surveillance")
         tabs.addTab(SettingsTab(config),                "Paramètres")
         tabs.addTab(HistoryTab(config),                 "Historique")
+        tabs.addTab(PaperTradingTab(config),            "Paper-Trading")
         tabs.addTab(BacktestTab(config),                "Backtest")
-        tabs.addTab(BacktestMultiTab(config),            "Backtest Multi‑Périodes")
+        tabs.addTab(BacktestMultiTab(config),           "Backtest Multi‑Périodes")
         tabs.addTab(ChartTab(config),                   "Graphiques")
         tabs.addTab(OptimizeTab(config),                "Optimisation")
         tabs.addTab(ExportTab(config),                  "Export")
